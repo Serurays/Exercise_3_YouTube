@@ -1,0 +1,74 @@
+---
+title: "Exercise-3"
+author: "Serra Aksoy"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+
+men_marathon <- read.csv("Mens_Boston_Marathon_Winners.csv")
+women_marathon <- read.csv("Womens_Boston_Marathon_Winners.csv")
+
+men_marathon <- men_marathon %>%
+  mutate(Gender = "Male")
+
+
+women_marathon <- women_marathon %>%
+  mutate(Gender = "Female")
+
+head(women_marathon)
+head(men_marathon)
+```
+
+```{r}
+boston_marathon <- bind_rows(men_marathon, women_marathon)
+boston_marathon <- na.omit(boston_marathon)
+str(boston_marathon)
+head(boston_marathon)
+tail(boston_marathon)
+```
+
+```{r}
+convert_time_to_minutes <- function(time_str) {
+  time_parts <- strsplit(time_str, ":")[[1]]
+  
+  hours <- as.numeric(time_parts[1])
+  minutes <- as.numeric(time_parts[2])
+  seconds <- as.numeric(time_parts[3])
+  
+  total_minutes <- hours * 60 + minutes + seconds / 60
+  return (total_minutes)
+}
+
+boston_marathon <- boston_marathon %>%
+  mutate(Time = sapply(Time, convert_time_to_minutes))
+
+str(boston_marathon)
+head(boston_marathon)
+```
+
+```{r}
+average_time <- mean(boston_marathon$Time)
+average_time
+```
+
+```{r fig.cap="Trend of Winning Times in Boston Marathon Over the Years"}
+ggplot(boston_marathon,
+       aes(x = Year, y = Time, color = Gender)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  ylab("Winning Time (minutes)")
+```
+
+```{r fig.cap="Trend of Winning Times in Boston Marathon Over the Years"}
+boston_marathon <- boston_marathon %>%
+  mutate(Z_score = (Time - mean(Time)) / sd(Time))
+
+anomalies <- boston_marathon %>%
+  filter(abs(Z_score) > 2)
+
+print(anomalies)
+```
