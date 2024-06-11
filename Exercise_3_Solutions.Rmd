@@ -89,5 +89,43 @@ summary(kindle_books)
 ```
 
 ```{r}
+average_price <- mean(kindle_books$price, na.rm = TRUE)
+average_price
 
+ggplot(kindle_books,
+       aes(x = price)) +
+  geom_histogram(binwidth = 5) +
+  ggtitle("Distribution of Kindle Book Prices") +
+  xlab("Price ($)") +
+  ylab("Frequency") +
+  xlim(0, 25)
 ```
+
+```{r}
+top_books <- kindle_books %>%
+  filter(reviews >= 50) %>%
+  arrange(desc(stars)) %>%
+  head(10) %>%
+  select(title, author, stars, reviews)
+
+library(knitr)
+install.packages("kableExtra")
+library(kableExtra)
+
+kable(top_books, format = "html", table.attr = "class='table table-striped'", caption = "Top 10 Highest Rated Kindle Books") %>%
+  kable_styling(full_width = F, position = center)
+
+top_books
+```
+
+```{r}
+ggplot(kindle_books, aes(x = reviews, y = stars)) +
+  geom_point() +
+  ggtitle("Correlation between Number of Reviews and Average Rating") +
+  xlab("Number of Reviews") +
+  ylab("Average Rating")
+
+correlation <- cor(kindle_books$reviews, kindle_books$stars, use = "complete.obs")
+correlation
+```
+
