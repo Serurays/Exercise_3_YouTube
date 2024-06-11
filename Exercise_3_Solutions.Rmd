@@ -109,11 +109,10 @@ top_books <- kindle_books %>%
   select(title, author, stars, reviews)
 
 library(knitr)
-install.packages("kableExtra")
 library(kableExtra)
 
 kable(top_books, format = "html", table.attr = "class='table table-striped'", caption = "Top 10 Highest Rated Kindle Books") %>%
-  kable_styling(full_width = F, position = center)
+  kable_styling(full_width = F, position = "center")
 
 top_books
 ```
