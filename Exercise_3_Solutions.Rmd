@@ -62,13 +62,3 @@ ggplot(boston_marathon,
   xlab("Year") +
   ylab("Winning Time (minutes)")
 ```
-
-```{r fig.cap="Trend of Winning Times in Boston Marathon Over the Years"}
-boston_marathon <- boston_marathon %>%
-  mutate(Z_score = (Time - mean(Time)) / sd(Time))
-
-anomalies <- boston_marathon %>%
-  filter(abs(Z_score) > 2)
-
-print(anomalies)
-```
