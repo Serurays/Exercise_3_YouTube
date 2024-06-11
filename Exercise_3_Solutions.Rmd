@@ -128,3 +128,7 @@ correlation <- cor(kindle_books$reviews, kindle_books$stars, use = "complete.obs
 correlation
 ```
 
+```{r}
+print("Exercise Completed! Congrats:)")
+```
+
