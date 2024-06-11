@@ -5,6 +5,8 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
+## Exercise 2.1
+
 ```{r}
 library(tidyverse)
 
@@ -61,4 +63,31 @@ ggplot(boston_marathon,
   geom_point() +
   xlab("Year") +
   ylab("Winning Time (minutes)")
+```
+
+```{r}
+boston_marathon <- boston_marathon %>%
+  mutate(Z_score = (Time - mean(Time)) / sd(Time))
+
+anomalies <- boston_marathon %>%
+  filter(abs(Z_score) > 2)
+
+print(anomalies)
+```
+
+## Exercise 2.2
+
+```{r}
+kindle_books <- read.csv("kindle_data-v2.csv")
+
+summary(kindle_books)
+
+kindle_books <- kindle_books %>%
+  filter(price > 0, stars > 0)
+
+summary(kindle_books)
+```
+
+```{r}
+
 ```
